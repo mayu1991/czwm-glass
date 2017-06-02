@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czwm.dao.cust.ICustExperienceResultDao">
+    <resultMap id="BaseResultMap" type="com.czwm.dto.cust.experience.CustExperienceResultDto">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="cust_id" property="custId" jdbcType="INTEGER"/>
+        <result column="experience_frequency" property="experienceFrequency" jdbcType="INTEGER"/>
+        <result column="appointment_time" property="appointmentTime" jdbcType="TIMESTAMP"/>
+        <result column="experience_time" property="experienceTime" jdbcType="TIMESTAMP"/>
+        <result column="reception_name" property="receptionName" jdbcType="VARCHAR"/>
+        <result column="del_flag" property="delFlag" jdbcType="TINYINT"/>
+        <result column="created_by" property="createdBy" jdbcType="INTEGER"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_by" property="lastUpdatedBy" jdbcType="INTEGER"/>
+        <result column="last_updated_time" property="lastUpdatedTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and
+                                    #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="("
+                                             close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and
+                                    #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="("
+                                             close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, cust_id, experience_frequency, appointment_time, experience_time, reception_name, 
+    del_flag, created_by, created_time, last_updated_by, last_updated_time
+  </sql>
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="com.czwm.dto.cust.experience.CustExperienceResultExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from cust_experience_result
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from cust_experience_result
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByConditions" resultMap="BaseResultMap"
+            parameterType="com.czwm.dto.cust.experience.CustExperienceResultDto">
+        select
+        <include refid="Base_Column_List"/>
+        from cust_experience_result
+        where del_flag = #{delFlag}
+        <if test="receptionName != null">
+            and reception_name = #{receptionName}
+        </if>
+        ORDER BY ID desc
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cust_experience_result
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+    <delete id="deleteByCustId" parameterType="java.lang.Integer">
+    delete from cust_experience_result
+    where cust_id = #{custId,jdbcType=INTEGER}
+  </delete>
+
+    <delete id="deleteByExample"
+            parameterType="com.czwm.dto.cust.experience.CustExperienceResultExample">
+        delete from cust_experience_result
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.czwm.dto.cust.experience.CustExperienceResultDto"
+            useGeneratedKeys="true" keyProperty="id">
+    insert into cust_experience_result (id, cust_id, experience_frequency, 
+      appointment_time, experience_time, reception_name, 
+      del_flag, created_by, created_time, 
+      last_updated_by, last_updated_time)
+    values (#{id,jdbcType=INTEGER}, #{custId,jdbcType=INTEGER}, #{experienceFrequency,jdbcType=INTEGER}, 
+      #{appointmentTime,jdbcType=TIMESTAMP}, #{experienceTime,jdbcType=TIMESTAMP}, #{receptionName,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=TINYINT}, #{createdBy,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{lastUpdatedBy,jdbcType=INTEGER}, #{lastUpdatedTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective"
+            parameterType="com.czwm.dto.cust.experience.CustExperienceResultDto"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into cust_experience_result
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id >-1">
+                id,
+            </if>
+            <if test="custId != null">
+                cust_id,
+            </if>
+            <if test="experienceFrequency != null">
+                experience_frequency,
+            </if>
+            <if test="appointmentTime != null">
+                appointment_time,
+            </if>
+            <if test="experienceTime != null">
+                experience_time,
+            </if>
+            <if test="receptionName != null">
+                reception_name,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createdBy != null">
+                created_by,
+            </if>
+            <if test="createdTime != null">
+                created_time,
+            </if>
+            <if test="lastUpdatedBy != null">
+                last_updated_by,
+            </if>
+            <if test="lastUpdatedTime != null">
+                last_updated_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id >-1">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="custId != null">
+                #{custId,jdbcType=INTEGER},
+            </if>
+            <if test="experienceFrequency != null">
+                #{experienceFrequency,jdbcType=INTEGER},
+            </if>
+            <if test="appointmentTime != null">
+                #{appointmentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="experienceTime != null">
+                #{experienceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="receptionName != null">
+                #{receptionName,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=TINYINT},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy,jdbcType=INTEGER},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdatedBy != null">
+                #{lastUpdatedBy,jdbcType=INTEGER},
+            </if>
+            <if test="lastUpdatedTime != null">
+                #{lastUpdatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample"
+            parameterType="com.czwm.dto.cust.experience.CustExperienceResultExample"
+            resultType="java.lang.Integer">
+        select count(*) from cust_experience_result
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update cust_experience_result
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.custId != null">
+                cust_id = #{record.custId,jdbcType=INTEGER},
+            </if>
+            <if test="record.experienceFrequency != null">
+                experience_frequency = #{record.experienceFrequency,jdbcType=INTEGER},
+            </if>
+            <if test="record.appointmentTime != null">
+                appointment_time = #{record.appointmentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.experienceTime != null">
+                experience_time = #{record.experienceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.receptionName != null">
+                reception_name = #{record.receptionName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.delFlag != null">
+                del_flag = #{record.delFlag,jdbcType=TINYINT},
+            </if>
+            <if test="record.createdBy != null">
+                created_by = #{record.createdBy,jdbcType=INTEGER},
+            </if>
+            <if test="record.createdTime != null">
+                created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.lastUpdatedBy != null">
+                last_updated_by = #{record.lastUpdatedBy,jdbcType=INTEGER},
+            </if>
+            <if test="record.lastUpdatedTime != null">
+                last_updated_time = #{record.lastUpdatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update cust_experience_result
+        set id = #{record.id,jdbcType=INTEGER},
+        cust_id = #{record.custId,jdbcType=INTEGER},
+        experience_frequency = #{record.experienceFrequency,jdbcType=INTEGER},
+        appointment_time = #{record.appointmentTime,jdbcType=TIMESTAMP},
+        experience_time = #{record.experienceTime,jdbcType=TIMESTAMP},
+        reception_name = #{record.receptionName,jdbcType=VARCHAR},
+        del_flag = #{record.delFlag,jdbcType=TINYINT},
+        created_by = #{record.createdBy,jdbcType=INTEGER},
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+        last_updated_by = #{record.lastUpdatedBy,jdbcType=INTEGER},
+        last_updated_time = #{record.lastUpdatedTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.czwm.dto.cust.experience.CustExperienceResultDto">
+        update cust_experience_result
+        <set>
+            <if test="custId != null">
+                cust_id = #{custId,jdbcType=INTEGER},
+            </if>
+            <if test="experienceFrequency != null">
+                experience_frequency = #{experienceFrequency,jdbcType=INTEGER},
+            </if>
+            <if test="appointmentTime != null">
+                appointment_time = #{appointmentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="experienceTime != null">
+                experience_time = #{experienceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="receptionName != null">
+                reception_name = #{receptionName,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=TINYINT},
+            </if>
+            <if test="createdBy != null">
+                created_by = #{createdBy,jdbcType=INTEGER},
+            </if>
+            <if test="createdTime != null">
+                created_time = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdatedBy != null">
+                last_updated_by = #{lastUpdatedBy,jdbcType=INTEGER},
+            </if>
+            <if test="lastUpdatedTime != null">
+                last_updated_time = #{lastUpdatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.czwm.dto.cust.experience.CustExperienceResultDto">
+    update cust_experience_result
+    set cust_id = #{custId,jdbcType=INTEGER},
+      experience_frequency = #{experienceFrequency,jdbcType=INTEGER},
+      appointment_time = #{appointmentTime,jdbcType=TIMESTAMP},
+      experience_time = #{experienceTime,jdbcType=TIMESTAMP},
+      reception_name = #{receptionName,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=TINYINT},
+      created_by = #{createdBy,jdbcType=INTEGER},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      last_updated_by = #{lastUpdatedBy,jdbcType=INTEGER},
+      last_updated_time = #{lastUpdatedTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

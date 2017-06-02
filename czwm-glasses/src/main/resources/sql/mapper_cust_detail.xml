@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czwm.dao.cust.ICustDetailDao">
+    <resultMap id="BaseResultMap" type="com.czwm.dto.cust.detail.CustDetailDto">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="cust_name" property="custName" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="TINYINT"/>
+        <result column="age" property="age" jdbcType="TINYINT"/>
+        <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR"/>
+        <result column="school_name" property="schoolName" jdbcType="VARCHAR"/>
+        <result column="deal_flag" property="dealFlag" jdbcType="TINYINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="deal_trator_name" property="dealTratorName" jdbcType="VARCHAR"/>
+        <result column="del_flag" property="delFlag" jdbcType="TINYINT"/>
+        <result column="created_by" property="createdBy" jdbcType="INTEGER"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_by" property="lastUpdatedBy" jdbcType="INTEGER"/>
+        <result column="last_updated_time" property="lastUpdatedTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and
+                                    #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="("
+                                             close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and
+                                    #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="("
+                                             close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, cust_name, sex, age, mobile_phone, school_name, deal_flag, remark, deal_trator_name,
+        del_flag, created_by, created_time, last_updated_by, last_updated_time
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="com.czwm.dto.cust.detail.CustDetailExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from cust_detail
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from cust_detail
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap"
+            parameterType="com.czwm.dto.cust.detail.CustDetailDto">
+        select
+        <include refid="Base_Column_List"/>
+        from cust_detail
+        where del_flag = #{delFlag}
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="custName != null">
+            and cust_name like CONCAT('%',#{custName},'%')
+        </if>
+        <if test="dealTratorName != null">
+            and deal_trator_name = #{dealTratorName}
+        </if>
+        ORDER BY ID desc
+    </select>
+
+    <select id="selectByConditionPaging" resultMap="BaseResultMap"
+            parameterType="com.czwm.dto.cust.detail.CustDetailDto">
+        select
+        <include refid="Base_Column_List"/>
+        from cust_detail
+        where del_flag = #{delFlag}
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="custName != null">
+            and cust_name = #{custName}
+        </if>
+        <if test="dealTratorName != null">
+            and deal_trator_name = #{dealTratorName}
+        </if>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from cust_detail
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteByCustId" parameterType="java.lang.Integer">
+        delete from cust_detail
+        where id = #{custId,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteByExample" parameterType="com.czwm.dto.cust.detail.CustDetailExample">
+        delete from cust_detail
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.czwm.dto.cust.detail.CustDetailDto">
+        insert into cust_detail (id, cust_name, sex,
+        age, mobile_phone, school_name,
+        deal_flag, remark, deal_trator_name,
+        del_flag, created_by, created_time,
+        last_updated_by, last_updated_time)
+        values (#{id,jdbcType=INTEGER}, #{custName,jdbcType=VARCHAR}, #{sex,jdbcType=TINYINT},
+        #{age,jdbcType=TINYINT}, #{mobilePhone,jdbcType=VARCHAR}, #{schoolName,jdbcType=VARCHAR},
+        #{dealFlag,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{dealTratorName,jdbcType=VARCHAR},
+        #{delFlag,jdbcType=TINYINT}, #{createdBy,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP},
+        #{lastUpdatedBy,jdbcType=INTEGER}, #{lastUpdatedTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.czwm.dto.cust.detail.CustDetailDto">
+        insert into cust_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="custName != null">
+                cust_name,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="age != null">
+                age,
+            </if>
+            <if test="mobilePhone != null">
+                mobile_phone,
+            </if>
+            <if test="schoolName != null">
+                school_name,
+            </if>
+            <if test="dealFlag != null">
+                deal_flag,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="dealTratorName != null">
+                deal_trator_name,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createdBy != null">
+                created_by,
+            </if>
+            <if test="createdTime != null">
+                created_time,
+            </if>
+            <if test="lastUpdatedBy != null">
+                last_updated_by,
+            </if>
+            <if test="lastUpdatedTime != null">
+                last_updated_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="custName != null">
+                #{custName,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="age != null">
+                #{age,jdbcType=TINYINT},
+            </if>
+            <if test="mobilePhone != null">
+                #{mobilePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="schoolName != null">
+                #{schoolName,jdbcType=VARCHAR},
+            </if>
+            <if test="dealFlag != null">
+                #{dealFlag,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="dealTratorName != null">
+                #{dealTratorName,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=TINYINT},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy,jdbcType=INTEGER},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdatedBy != null">
+                #{lastUpdatedBy,jdbcType=INTEGER},
+            </if>
+            <if test="lastUpdatedTime != null">
+                #{lastUpdatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.czwm.dto.cust.detail.CustDetailExample"
+            resultType="java.lang.Integer">
+        select count(*) from cust_detail
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update cust_detail
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.custName != null">
+                cust_name = #{record.custName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sex != null">
+                sex = #{record.sex,jdbcType=TINYINT},
+            </if>
+            <if test="record.age != null">
+                age = #{record.age,jdbcType=TINYINT},
+            </if>
+            <if test="record.mobilePhone != null">
+                mobile_phone = #{record.mobilePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.schoolName != null">
+                school_name = #{record.schoolName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.dealFlag != null">
+                deal_flag = #{record.dealFlag,jdbcType=TINYINT},
+            </if>
+            <if test="record.remark != null">
+                remark = #{record.remark,jdbcType=VARCHAR},
+            </if>
+            <if test="record.dealTratorName != null">
+                deal_trator_name = #{record.dealTratorName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.delFlag != null">
+                del_flag = #{record.delFlag,jdbcType=TINYINT},
+            </if>
+            <if test="record.createdBy != null">
+                created_by = #{record.createdBy,jdbcType=INTEGER},
+            </if>
+            <if test="record.createdTime != null">
+                created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.lastUpdatedBy != null">
+                last_updated_by = #{record.lastUpdatedBy,jdbcType=INTEGER},
+            </if>
+            <if test="record.lastUpdatedTime != null">
+                last_updated_time = #{record.lastUpdatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update cust_detail
+        set id = #{record.id,jdbcType=INTEGER},
+        cust_name = #{record.custName,jdbcType=VARCHAR},
+        sex = #{record.sex,jdbcType=TINYINT},
+        age = #{record.age,jdbcType=TINYINT},
+        mobile_phone = #{record.mobilePhone,jdbcType=VARCHAR},
+        school_name = #{record.schoolName,jdbcType=VARCHAR},
+        deal_flag = #{record.dealFlag,jdbcType=TINYINT},
+        remark = #{record.remark,jdbcType=VARCHAR},
+        deal_trator_name = #{record.dealTratorName,jdbcType=VARCHAR},
+        del_flag = #{record.delFlag,jdbcType=TINYINT},
+        created_by = #{record.createdBy,jdbcType=INTEGER},
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+        last_updated_by = #{record.lastUpdatedBy,jdbcType=INTEGER},
+        last_updated_time = #{record.lastUpdatedTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.czwm.dto.cust.detail.CustDetailDto">
+        update cust_detail
+        <set>
+            <if test="custName != null">
+                cust_name = #{custName,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="age != null">
+                age = #{age,jdbcType=TINYINT},
+            </if>
+            <if test="mobilePhone != null">
+                mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="schoolName != null">
+                school_name = #{schoolName,jdbcType=VARCHAR},
+            </if>
+            <if test="dealFlag != null">
+                deal_flag = #{dealFlag,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="dealTratorName != null">
+                deal_trator_name = #{dealTratorName,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=TINYINT},
+            </if>
+            <if test="createdBy != null">
+                created_by = #{createdBy,jdbcType=INTEGER},
+            </if>
+            <if test="createdTime != null">
+                created_time = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdatedBy != null">
+                last_updated_by = #{lastUpdatedBy,jdbcType=INTEGER},
+            </if>
+            <if test="lastUpdatedTime != null">
+                last_updated_time = #{lastUpdatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.czwm.dto.cust.detail.CustDetailDto">
+        update cust_detail
+        set cust_name = #{custName,jdbcType=VARCHAR},
+        sex = #{sex,jdbcType=TINYINT},
+        age = #{age,jdbcType=TINYINT},
+        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+        school_name = #{schoolName,jdbcType=VARCHAR},
+        deal_flag = #{dealFlag,jdbcType=TINYINT},
+        remark = #{remark,jdbcType=VARCHAR},
+        deal_trator_name = #{dealTratorName,jdbcType=VARCHAR},
+        del_flag = #{delFlag,jdbcType=TINYINT},
+        created_by = #{createdBy,jdbcType=INTEGER},
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+        last_updated_by = #{lastUpdatedBy,jdbcType=INTEGER},
+        last_updated_time = #{lastUpdatedTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <property name="lOG_FILE_PATH" value="/logs/tomcat/app/czwm-glasses" />
+    <!--控制台输出-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern> %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{32} - %msg%n  </Pattern>
+        </encoder>
+    </appender>
+
+    <!-- 文件输出日志 (文件大小策略进行文件输出，超过指定大小对文件备份) -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${lOG_FILE_PATH}/czwm-glasses-log.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${lOG_FILE_PATH}/czwn-glasses-log.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <!--  <maxHistory>30</maxHistory>  -->
+        </rollingPolicy>
+        <layout>
+            <Pattern> %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{32} - %msg%n  </Pattern>
+        </layout>
+    </appender>
+    <appender name="TIMELOGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${lOG_FILE_PATH}/czwn-glasses-time.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${lOG_FILE_PATH}/czwn-glasses-time.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+        <layout>
+            <Pattern> %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{32} - %msg%n  </Pattern>
+        </layout>
+    </appender>
+    <appender name="DEBUGINFOFILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${lOG_FILE_PATH}/czwn-glasses-debug.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${lOG_FILE_PATH}/czwn-glasses-debug.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+        <layout>
+            <Pattern> %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{32} - %msg%n  </Pattern>
+        </layout>
+    </appender>
+
+
+    <logger name="com.czwm" level="DEBUG"  >
+        <!-- 先打印debug信息到czwn-glasses-debug-->
+        <appender-ref ref="DEBUGINFOFILE" />
+        <!-- 再打印debug信息到控制台 dev环境下-->
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <root level="DEBUG">
+        <!-- 最后汇总所有的info信息和上面的debug信息到czwn-glasses-log-->
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

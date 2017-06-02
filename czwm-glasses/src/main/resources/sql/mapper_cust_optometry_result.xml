@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.czwm.dao.cust.ICustOptometryResultDao">
+    <resultMap id="BaseResultMap" type="com.czwm.dto.cust.optometry.CustOptometryResultDto">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="cust_id" property="custId" jdbcType="INTEGER"/>
+        <result column="optometry_time" property="optometryTime" jdbcType="TIMESTAMP"/>
+        <result column="experience_time" property="experienceTime" jdbcType="TIMESTAMP"/>
+        <result column="reception_name" property="receptionName" jdbcType="VARCHAR"/>
+        <result column="left_naked_vision" property="leftNakedVision" jdbcType="VARCHAR"/>
+        <result column="right_naked_vision" property="rightNakedVision" jdbcType="VARCHAR"/>
+        <result column="interpupillary_adjustment_range" property="interpupillaryAdjustmentRange"
+                jdbcType="VARCHAR"/>
+        <result column="left_adjustment_range" property="leftAdjustmentRange" jdbcType="VARCHAR"/>
+        <result column="right_adjustment_range" property="rightAdjustmentRange" jdbcType="VARCHAR"/>
+        <result column="left_combined_optometry_vision" property="leftCombinedOptometryVision"
+                jdbcType="VARCHAR"/>
+        <result column="right_combined_optometry_vision" property="rightCombinedOptometryVision"
+                jdbcType="VARCHAR"/>
+        <result column="left_primary_mirror_number" property="leftPrimaryMirrorNumber"
+                jdbcType="VARCHAR"/>
+        <result column="right_primary_mirror_number" property="rightPrimaryMirrorNumber"
+                jdbcType="VARCHAR"/>
+        <result column="left_mirror_collection_vision" property="leftMirrorCollectionVision"
+                jdbcType="VARCHAR"/>
+        <result column="right_mirror_collection_vision" property="rightMirrorCollectionVision"
+                jdbcType="VARCHAR"/>
+        <result column="refractive_properties" property="refractiveProperties" jdbcType="TINYINT"/>
+        <result column="appointment_time" property="appointmentTime" jdbcType="TIMESTAMP"/>
+        <result column="refractive_properties_level" property="refractivePropertiesLevel"
+                jdbcType="VARCHAR"/>
+        <result column="experience_type" property="experienceType" jdbcType="TINYINT"/>
+        <result column="del_flag" property="delFlag" jdbcType="TINYINT"/>
+        <result column="submit_flag" property="submitFlag" jdbcType="TINYINT"/>
+        <result column="created_by" property="createdBy" jdbcType="INTEGER"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="last_updated_by" property="lastUpdatedBy" jdbcType="INTEGER"/>
+        <result column="last_updated_time" property="lastUpdatedTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and
+                                    #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="("
+                                             close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and
+                                    #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="("
+                                             close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, cust_id, optometry_time, experience_time, reception_name, left_naked_vision,
+    right_naked_vision, left_combined_optometry_vision, right_combined_optometry_vision,
+    left_primary_mirror_number, right_primary_mirror_number, left_mirror_collection_vision,
+    right_mirror_collection_vision, refractive_properties, appointment_time, refractive_properties_level,
+    experience_type, del_flag, submit_flag, created_by, created_time, last_updated_by,
+    last_updated_time,left_adjustment_range,right_adjustment_range,interpupillary_adjustment_range
+  </sql>
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="com.czwm.dto.cust.optometry.CustOptometryResultExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from cust_optometry_result
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from cust_optometry_result
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByConditions" resultMap="BaseResultMap"
+            parameterType="com.czwm.dto.cust.optometry.CustOptometryResultDto">
+        select
+        <include refid="Base_Column_List"/>
+        from cust_optometry_result
+        where
+        del_flag = 0
+        <if test="custId !=null">
+            and cust_id = #{custId}
+        </if>
+        <if test="experienceType !=null">
+            and experience_type = #{experienceType}
+        </if>
+        <if test="receptionName !=null">
+            and reception_name = #{receptionName}
+        </if>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cust_optometry_result
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+    <delete id="deleteByCustId" parameterType="java.lang.Integer">
+        delete from cust_optometry_result
+        where cust_id = #{custId,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteByExample"
+            parameterType="com.czwm.dto.cust.optometry.CustOptometryResultExample">
+        delete from cust_optometry_result
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.czwm.dto.cust.optometry.CustOptometryResultDto"
+            useGeneratedKeys="true" keyProperty="id">
+    insert into cust_optometry_result (id, cust_id, optometry_time,
+    experience_time, reception_name, left_naked_vision,
+    right_naked_vision, left_combined_optometry_vision,
+    right_combined_optometry_vision, left_primary_mirror_number,
+    right_primary_mirror_number, left_mirror_collection_vision,
+    right_mirror_collection_vision, refractive_properties,
+    appointment_time, refractive_properties_level,
+    experience_type, del_flag, submit_flag,
+    created_by, created_time, last_updated_by,
+    last_updated_time,left_adjustment_range,right_adjustment_range)
+    values (#{id,jdbcType=INTEGER}, #{custId,jdbcType=INTEGER}, #{optometryTime,jdbcType=TIMESTAMP},
+    #{experienceTime,jdbcType=TIMESTAMP}, #{receptionName,jdbcType=VARCHAR}, #{leftNakedVision,jdbcType=VARCHAR},
+    #{rightNakedVision,jdbcType=VARCHAR}, #{leftCombinedOptometryVision,jdbcType=VARCHAR},
+    #{rightCombinedOptometryVision,jdbcType=VARCHAR}, #{leftPrimaryMirrorNumber,jdbcType=VARCHAR},
+    #{rightPrimaryMirrorNumber,jdbcType=VARCHAR}, #{leftMirrorCollectionVision,jdbcType=VARCHAR},
+    #{rightMirrorCollectionVision,jdbcType=VARCHAR}, #{refractiveProperties,jdbcType=TINYINT},
+    #{appointmentTime,jdbcType=TIMESTAMP}, #{refractivePropertiesLevel,jdbcType=VARCHAR},
+    #{experienceType,jdbcType=TINYINT}, #{delFlag,jdbcType=TINYINT}, #{submitFlag,jdbcType=TINYINT},
+    #{createdBy,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=INTEGER},
+    #{lastUpdatedTime,jdbcType=TIMESTAMP},
+    #{leftAdjustmentRange,jdbcType=VARCHAR},
+    #{rightAdjustmentRange,jdbcType=VARCHAR},
+    #{interpupillaryAdjustmentRange,jdbcType=VARCHAR}
+
+    )
+  </insert>
+    <insert id="insertSelective" parameterType="com.czwm.dto.cust.optometry.CustOptometryResultDto"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into cust_optometry_result
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
+            <if test="id != null and id !=-1">
+                id,
+            </if>
+            <if test="custId != null">
+                cust_id,
+            </if>
+            <if test="optometryTime != null">
+                optometry_time,
+            </if>
+            <if test="experienceTime != null">
+                experience_time,
+            </if>
+            <if test="receptionName != null">
+                reception_name,
+            </if>
+            <if test="leftNakedVision != null">
+                left_naked_vision,
+            </if>
+            <if test="rightNakedVision != null">
+                right_naked_vision,
+            </if>
+            <if test="leftCombinedOptometryVision != null">
+                left_combined_optometry_vision,
+            </if>
+            <if test="rightCombinedOptometryVision != null">
+                right_combined_optometry_vision,
+            </if>
+            <if test="leftPrimaryMirrorNumber != null">
+                left_primary_mirror_number,
+            </if>
+            <if test="rightPrimaryMirrorNumber != null">
+                right_primary_mirror_number,
+            </if>
+            <if test="leftMirrorCollectionVision != null">
+                left_mirror_collection_vision,
+            </if>
+            <if test="rightMirrorCollectionVision != null">
+                right_mirror_collection_vision,
+            </if>
+            <if test="refractiveProperties != null">
+                refractive_properties,
+            </if>
+            <if test="appointmentTime != null">
+                appointment_time,
+            </if>
+            <if test="refractivePropertiesLevel != null">
+                refractive_properties_level,
+            </if>
+            <if test="experienceType != null">
+                experience_type,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="submitFlag != null">
+                submit_flag,
+            </if>
+            <if test="createdBy != null">
+                created_by,
+            </if>
+            <if test="createdTime != null">
+                created_time,
+            </if>
+            <if test="lastUpdatedBy != null">
+                last_updated_by,
+            </if>
+            <if test="lastUpdatedTime != null">
+                last_updated_time,
+            </if>
+            <if test="leftAdjustmentRange != null">
+                left_adjustment_range,
+            </if>
+            <if test="rightAdjustmentRange != null">
+                right_adjustment_range,
+            </if>
+            <if test="interpupillaryAdjustmentRange != null">
+                interpupillary_adjustment_range,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id !=-1">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="custId != null">
+                #{custId,jdbcType=INTEGER},
+            </if>
+            <if test="optometryTime != null">
+                #{optometryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="experienceTime != null">
+                #{experienceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="receptionName != null">
+                #{receptionName,jdbcType=VARCHAR},
+            </if>
+            <if test="leftNakedVision != null">
+                #{leftNakedVision,jdbcType=VARCHAR},
+            </if>
+            <if test="rightNakedVision != null">
+                #{rightNakedVision,jdbcType=VARCHAR},
+            </if>
+            <if test="leftCombinedOptometryVision != null">
+                #{leftCombinedOptometryVision,jdbcType=VARCHAR},
+            </if>
+            <if test="rightCombinedOptometryVision != null">
+                #{rightCombinedOptometryVision,jdbcType=VARCHAR},
+            </if>
+            <if test="leftPrimaryMirrorNumber != null">
+                #{leftPrimaryMirrorNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="rightPrimaryMirrorNumber != null">
+                #{rightPrimaryMirrorNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="leftMirrorCollectionVision != null">
+                #{leftMirrorCollectionVision,jdbcType=VARCHAR},
+            </if>
+            <if test="rightMirrorCollectionVision != null">
+                #{rightMirrorCollectionVision,jdbcType=VARCHAR},
+            </if>
+            <if test="refractiveProperties != null">
+                #{refractiveProperties,jdbcType=TINYINT},
+            </if>
+            <if test="appointmentTime != null">
+                #{appointmentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="refractivePropertiesLevel != null">
+                #{refractivePropertiesLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="experienceType != null">
+                #{experienceType,jdbcType=TINYINT},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=TINYINT},
+            </if>
+            <if test="submitFlag != null">
+                #{submitFlag,jdbcType=TINYINT},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy,jdbcType=INTEGER},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdatedBy != null">
+                #{lastUpdatedBy,jdbcType=INTEGER},
+            </if>
+            <if test="lastUpdatedTime != null">
+                #{lastUpdatedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="leftAdjustmentRange != null">
+                #{leftAdjustmentRange,jdbcType=VARCHAR},
+            </if>
+            <if test="rightAdjustmentRange != null">
+                #{rightAdjustmentRange,jdbcType=VARCHAR},
+            </if>
+            <if test="interpupillaryAdjustmentRange != null">
+                #{interpupillaryAdjustmentRange,jdbcType=VARCHAR},
+            </if>
+
+        </trim>
+    </insert>
+    <select id="countByExample"
+            parameterType="com.czwm.dto.cust.optometry.CustOptometryResultExample"
+            resultType="java.lang.Integer">
+        select count(*) from cust_optometry_result
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update cust_optometry_result
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.custId != null">
+                cust_id = #{record.custId,jdbcType=INTEGER},
+            </if>
+            <if test="record.optometryTime != null">
+                optometry_time = #{record.optometryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.experienceTime != null">
+                experience_time = #{record.experienceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.receptionName != null">
+                reception_name = #{record.receptionName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.leftNakedVision != null">
+                left_naked_vision = #{record.leftNakedVision,jdbcType=VARCHAR},
+            </if>
+            <if test="record.rightNakedVision != null">
+                right_naked_vision = #{record.rightNakedVision,jdbcType=VARCHAR},
+            </if>
+            <if test="record.leftCombinedOptometryVision != null">
+                left_combined_optometry_vision =
+                #{record.leftCombinedOptometryVision,jdbcType=VARCHAR},
+            </if>
+            <if test="record.rightCombinedOptometryVision != null">
+                right_combined_optometry_vision =
+                #{record.rightCombinedOptometryVision,jdbcType=VARCHAR},
+            </if>
+            <if test="record.leftPrimaryMirrorNumber != null">
+                left_primary_mirror_number = #{record.leftPrimaryMirrorNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="record.rightPrimaryMirrorNumber != null">
+                right_primary_mirror_number = #{record.rightPrimaryMirrorNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="record.leftMirrorCollectionVision != null">
+                left_mirror_collection_vision =
+                #{record.leftMirrorCollectionVision,jdbcType=VARCHAR},
+            </if>
+            <if test="record.rightMirrorCollectionVision != null">
+                right_mirror_collection_vision =
+                #{record.rightMirrorCollectionVision,jdbcType=VARCHAR},
+            </if>
+            <if test="record.refractiveProperties != null">
+                refractive_properties = #{record.refractiveProperties,jdbcType=TINYINT},
+            </if>
+            <if test="record.appointmentTime != null">
+                appointment_time = #{record.appointmentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.refractivePropertiesLevel != null">
+                refractive_properties_level = #{record.refractivePropertiesLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="record.experienceType != null">
+                experience_type = #{record.experienceType,jdbcType=TINYINT},
+            </if>
+            <if test="record.delFlag != null">
+                del_flag = #{record.delFlag,jdbcType=TINYINT},
+            </if>
+            <if test="record.submitFlag != null">
+                submit_flag = #{record.submitFlag,jdbcType=TINYINT},
+            </if>
+            <if test="record.createdBy != null">
+                created_by = #{record.createdBy,jdbcType=INTEGER},
+            </if>
+            <if test="record.createdTime != null">
+                created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.lastUpdatedBy != null">
+                last_updated_by = #{record.lastUpdatedBy,jdbcType=INTEGER},
+            </if>
+            <if test="record.lastUpdatedTime != null">
+                last_updated_time = #{record.lastUpdatedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.leftAdjustmentRange != null">
+                left_adjustment_range = #{record.leftAdjustmentRange,jdbcType=VARCHAR},
+            </if>
+            <if test="record.rightAdjustmentRange != null">
+                right_adjustment_range = #{record.rightAdjustmentRange,jdbcType=VARCHAR},
+            </if>
+            <if test="record.interpupillaryAdjustmentRange != null">
+                interpupillary_adjustment_range =
+                #{record.interpupillaryAdjustmentRange,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update cust_optometry_result
+        set id = #{record.id,jdbcType=INTEGER},
+        cust_id = #{record.custId,jdbcType=INTEGER},
+        optometry_time = #{record.optometryTime,jdbcType=TIMESTAMP},
+        experience_time = #{record.experienceTime,jdbcType=TIMESTAMP},
+        reception_name = #{record.receptionName,jdbcType=VARCHAR},
+        left_naked_vision = #{record.leftNakedVision,jdbcType=VARCHAR},
+        right_naked_vision = #{record.rightNakedVision,jdbcType=VARCHAR},
+        left_combined_optometry_vision = #{record.leftCombinedOptometryVision,jdbcType=VARCHAR},
+        right_combined_optometry_vision = #{record.rightCombinedOptometryVision,jdbcType=VARCHAR},
+        left_primary_mirror_number = #{record.leftPrimaryMirrorNumber,jdbcType=VARCHAR},
+        right_primary_mirror_number = #{record.rightPrimaryMirrorNumber,jdbcType=VARCHAR},
+        left_mirror_collection_vision = #{record.leftMirrorCollectionVision,jdbcType=VARCHAR},
+        right_mirror_collection_vision = #{record.rightMirrorCollectionVision,jdbcType=VARCHAR},
+        refractive_properties = #{record.refractiveProperties,jdbcType=TINYINT},
+        appointment_time = #{record.appointmentTime,jdbcType=TIMESTAMP},
+        refractive_properties_level = #{record.refractivePropertiesLevel,jdbcType=VARCHAR},
+        experience_type = #{record.experienceType,jdbcType=TINYINT},
+        del_flag = #{record.delFlag,jdbcType=TINYINT},
+        submit_flag = #{record.submitFlag,jdbcType=TINYINT},
+        created_by = #{record.createdBy,jdbcType=INTEGER},
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+        last_updated_by = #{record.lastUpdatedBy,jdbcType=INTEGER},
+        last_updated_time = #{record.lastUpdatedTime,jdbcType=TIMESTAMP},
+        left_adjustment_range = #{record.leftAdjustmentRange,jdbcType=VARCHAR},
+        right_adjustment_range = #{record.rightAdjustmentRange,jdbcType=VARCHAR},
+        interpupillary_adjustment_range = #{record.interpupillaryAdjustmentRange,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.czwm.dto.cust.optometry.CustOptometryResultDto">
+        update cust_optometry_result
+        <set>
+            <if test="custId != null">
+                cust_id = #{custId,jdbcType=INTEGER},
+            </if>
+            <if test="optometryTime != null">
+                optometry_time = #{optometryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="experienceTime != null">
+                experience_time = #{experienceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="receptionName != null">
+                reception_name = #{receptionName,jdbcType=VARCHAR},
+            </if>
+            <if test="leftNakedVision != null">
+                left_naked_vision = #{leftNakedVision,jdbcType=VARCHAR},
+            </if>
+            <if test="rightNakedVision != null">
+                right_naked_vision = #{rightNakedVision,jdbcType=VARCHAR},
+            </if>
+            <if test="leftCombinedOptometryVision != null">
+                left_combined_optometry_vision = #{leftCombinedOptometryVision,jdbcType=VARCHAR},
+            </if>
+            <if test="rightCombinedOptometryVision != null">
+                right_combined_optometry_vision = #{rightCombinedOptometryVision,jdbcType=VARCHAR},
+            </if>
+            <if test="leftPrimaryMirrorNumber != null">
+                left_primary_mirror_number = #{leftPrimaryMirrorNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="rightPrimaryMirrorNumber != null">
+                right_primary_mirror_number = #{rightPrimaryMirrorNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="leftMirrorCollectionVision != null">
+                left_mirror_collection_vision = #{leftMirrorCollectionVision,jdbcType=VARCHAR},
+            </if>
+            <if test="rightMirrorCollectionVision != null">
+                right_mirror_collection_vision = #{rightMirrorCollectionVision,jdbcType=VARCHAR},
+            </if>
+            <if test="refractiveProperties != null">
+                refractive_properties = #{refractiveProperties,jdbcType=TINYINT},
+            </if>
+            <if test="appointmentTime != null">
+                appointment_time = #{appointmentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="refractivePropertiesLevel != null">
+                refractive_properties_level = #{refractivePropertiesLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="experienceType != null">
+                experience_type = #{experienceType,jdbcType=TINYINT},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=TINYINT},
+            </if>
+            <if test="submitFlag != null">
+                submit_flag = #{submitFlag,jdbcType=TINYINT},
+            </if>
+            <if test="createdBy != null">
+                created_by = #{createdBy,jdbcType=INTEGER},
+            </if>
+            <if test="createdTime != null">
+                created_time = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdatedBy != null">
+                last_updated_by = #{lastUpdatedBy,jdbcType=INTEGER},
+            </if>
+            <if test="lastUpdatedTime != null">
+                last_updated_time = #{lastUpdatedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="leftAdjustmentRange != null">
+                left_adjustment_range = #{leftAdjustmentRange,jdbcType=VARCHAR},
+            </if>
+            <if test="rightAdjustmentRange != null">
+                right_adjustment_range = #{rightAdjustmentRange,jdbcType=VARCHAR},
+            </if>
+            <if test="interpupillaryAdjustmentRange != null">
+                interpupillary_adjustment_range = #{interpupillaryAdjustmentRange,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.czwm.dto.cust.optometry.CustOptometryResultDto">
+    update cust_optometry_result
+    set cust_id = #{custId,jdbcType=INTEGER},
+      optometry_time = #{optometryTime,jdbcType=TIMESTAMP},
+      experience_time = #{experienceTime,jdbcType=TIMESTAMP},
+      reception_name = #{receptionName,jdbcType=VARCHAR},
+      left_naked_vision = #{leftNakedVision,jdbcType=VARCHAR},
+      right_naked_vision = #{rightNakedVision,jdbcType=VARCHAR},
+      left_combined_optometry_vision = #{leftCombinedOptometryVision,jdbcType=VARCHAR},
+      right_combined_optometry_vision = #{rightCombinedOptometryVision,jdbcType=VARCHAR},
+      left_primary_mirror_number = #{leftPrimaryMirrorNumber,jdbcType=VARCHAR},
+      right_primary_mirror_number = #{rightPrimaryMirrorNumber,jdbcType=VARCHAR},
+      left_mirror_collection_vision = #{leftMirrorCollectionVision,jdbcType=VARCHAR},
+      right_mirror_collection_vision = #{rightMirrorCollectionVision,jdbcType=VARCHAR},
+      refractive_properties = #{refractiveProperties,jdbcType=TINYINT},
+      appointment_time = #{appointmentTime,jdbcType=TIMESTAMP},
+      refractive_properties_level = #{refractivePropertiesLevel,jdbcType=VARCHAR},
+      experience_type = #{experienceType,jdbcType=TINYINT},
+      del_flag = #{delFlag,jdbcType=TINYINT},
+      submit_flag = #{submitFlag,jdbcType=TINYINT},
+      created_by = #{createdBy,jdbcType=INTEGER},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      last_updated_by = #{lastUpdatedBy,jdbcType=INTEGER},
+      last_updated_time = #{lastUpdatedTime,jdbcType=TIMESTAMP},
+      left_adjustment_range = #{leftAdjustmentRange,jdbcType=VARCHAR},
+      right_adjustment_range = #{rightAdjustmentRange,jdbcType=VARCHAR},
+      interpupillary_adjustment_range = #{interpupillaryAdjustmentRange,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
