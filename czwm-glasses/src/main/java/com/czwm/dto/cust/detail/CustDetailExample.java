@@ -150,6 +150,11 @@ public class CustDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andStoreIdIn(List<String> values) {
+            addCriterion("store_id in", values, "id");
+            return (Criteria) this;
+        }
+
         public Criteria andIdNotIn(List<Integer> values) {
             addCriterion("id not in", values, "id");
             return (Criteria) this;

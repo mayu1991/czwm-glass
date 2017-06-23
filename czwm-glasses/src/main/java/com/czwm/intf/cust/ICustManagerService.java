@@ -33,6 +33,8 @@ public interface ICustManagerService {
 
     List<CustDetailDto> selectCustsByIds(List<Integer> ids);
 
+    List<CustDetailDto> selectCustsByIdsAndStore(List<Integer> ids, List<String> storeIds);
+
     /**
      * 新增客户检测结果
      *

@@ -8,8 +8,11 @@ import com.czwm.dto.cust.detail.CustQueryRequest;
 import com.czwm.dto.cust.experience.CustExperienceResultDto;
 import com.czwm.dto.cust.experience.CustExperienceResultRequest;
 import com.czwm.dto.cust.optometry.CustOptometryResultDto;
+import com.czwm.dto.user.UserDto;
 import com.czwm.imp.cust.UserTypeEnum;
+import com.czwm.imp.user.AuthorityTypeEnum;
 import com.czwm.intf.cust.ICustManagerService;
+import com.czwm.intf.user.IUserService;
 import com.czwm.util.JsonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 客户管理控制器
@@ -36,6 +36,9 @@ public class CustController {
 
     @Autowired
     private ICustManagerService custManagerService;
+
+    @Autowired
+    IUserService userService;
 
     /**
      * 保存客户详细信息
@@ -70,6 +73,17 @@ public class CustController {
         Set<Integer> custIdSet = new HashSet<Integer>();
         List<CustDetailDto> custDetailDbs = new ArrayList<CustDetailDto>();
 
+        //管理员可以查看所有会员
+        //老板可以查看多个门店的会员
+        //员工只可以查看本门店的会员
+        UserDto userDto = userService.selectUserById(custQueryRequest.getUserId());
+        List<String> storeIdList = new ArrayList<String>();
+        //不是管理员
+        if (userDto != null && userDto.getAuthorityType() < AuthorityTypeEnum.ADMIN.getKey()) {
+            String[] storeIds = userDto.getStoreIds().split(",");
+            storeIdList = Arrays.asList(storeIds);//可以查看的所有门市列表
+        }
+
         if (UserTypeEnum.TRATOR.getKey() == custQueryRequest.getCustType()) {
             //业务员
             CustDetailDto custDetailDto = new CustDetailDto();
@@ -77,6 +91,12 @@ public class CustController {
             custDetailDto.setDealFlag((byte) 0);
             custDetailDbs = custManagerService
                     .selectCustsByCondition(custDetailDto);
+
+            if (!CollectionUtils.isEmpty(custDetailDbs)) {
+                for (CustDetailDto custDetailDb : custDetailDbs) {
+                    custIdSet.add(custDetailDb.getId());
+                }
+            }
         } else if (UserTypeEnum.OPTOMETRY.getKey() == custQueryRequest.getCustType()) {
             //验光师
             CustOptometryResultDto custOptometryResultDto = new CustOptometryResultDto();
@@ -115,8 +135,16 @@ public class CustController {
         if (!CollectionUtils.isEmpty(custIdSet)) {
             List<Integer> custIds = new ArrayList<Integer>();
             custIds.addAll(custIdSet);
-            custDetailDbs = custManagerService
-                    .selectCustsByIds(custIds);
+            //查询所有会员
+            if (CollectionUtils.isEmpty(storeIdList)) {
+                custDetailDbs = custManagerService
+                        .selectCustsByIds(custIds);
+            } else {
+                //查询特定门市的会员
+                custDetailDbs = custManagerService
+                        .selectCustsByIdsAndStore(custIds, storeIdList);
+            }
+
         }
 
         response.setData(custDetailDbs);
@@ -138,6 +166,36 @@ public class CustController {
                 .selectCustsByCondition(new CustDetailDto());
         if (!CollectionUtils.isEmpty(custDetailDbs)) {
             response.setData(custDetailDbs);
+        }
+
+        return response;
+    }
+
+    /**
+     * 查询指定门市下的客户信息
+     */
+    @RequestMapping(value = "/get/by/{userId}", method = { RequestMethod.GET })
+    @ResponseBody
+    public HttpBaseResponse getByUserId(@PathVariable Integer userId) {
+
+        HttpBaseResponse response = new HttpBaseResponse();
+        response.setSuccess(true);
+
+        UserDto userDto = userService.selectUserById(userId);
+        if (userDto != null) {
+            CustDetailDto custDetailDto = new CustDetailDto();
+            //不是管理员
+            if (userDto.getAuthorityType() < AuthorityTypeEnum.ADMIN.getKey()) {
+                String[] storeIds = userDto.getStoreIds().split(",");
+                List<String> storeIdList = Arrays.asList(storeIds);//可以查看的所有门市列表
+                custDetailDto.setStoreIds(storeIdList);
+            }
+            //查询所有客户
+            List<CustDetailDto> custDetailDbs = custManagerService
+                    .selectCustsByCondition(custDetailDto);
+            if (!CollectionUtils.isEmpty(custDetailDbs)) {
+                response.setData(custDetailDbs);
+            }
         }
 
         return response;

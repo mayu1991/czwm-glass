@@ -21,7 +21,8 @@ public class StoreServiceImpl implements IStoreService {
     public List<StoreDto> getStoreAll() {
         StoreExample example = new StoreExample();
         StoreExample.Criteria criteria = example.createCriteria();
-
+        criteria.andDelFlagEqualTo((byte) 0);
+        //查询没有下线的门市
         List<StoreDto> storeDbs = storeDao.selectByExample(example);
         return storeDbs;
     }

@@ -377,4 +377,10 @@ public class CustManagerServiceImpl implements ICustManagerService {
         return custDetaiDao.selectByExample(custDetailExample);
     }
 
+    public List<CustDetailDto> selectCustsByIdsAndStore(List<Integer> ids, List<String> storeIds) {
+        CustDetailExample custDetailExample = new CustDetailExample();
+        custDetailExample.createCriteria().andIdIn(ids).andStoreIdIn(storeIds);
+        return custDetaiDao.selectByExample(custDetailExample);
+    }
+
 }

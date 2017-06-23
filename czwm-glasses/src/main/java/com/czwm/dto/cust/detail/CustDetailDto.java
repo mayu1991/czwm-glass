@@ -2,6 +2,8 @@ package com.czwm.dto.cust.detail;
 
 import com.czwm.dto.BaseDto;
 
+import java.util.List;
+
 public class CustDetailDto extends BaseDto {
 
     private Integer id;
@@ -25,6 +27,27 @@ public class CustDetailDto extends BaseDto {
     private String dealFlagDesc;
 
     private String dealTratorName;
+
+    //门市ID
+    private Integer storeId;
+
+    private List<String> storeIds;
+
+    public List<String> getStoreIds() {
+        return storeIds;
+    }
+
+    public void setStoreIds(List<String> storeIds) {
+        this.storeIds = storeIds;
+    }
+
+    public Integer getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Integer storeId) {
+        this.storeId = storeId;
+    }
 
     public String getDealFlagDesc() {
         return dealFlagDesc;

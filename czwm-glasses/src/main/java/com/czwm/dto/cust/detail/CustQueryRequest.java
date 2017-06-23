@@ -9,7 +9,25 @@ public class CustQueryRequest {
     private Integer id;
     private String tratorName;
     private Integer custType;
+    private Integer storeId;
+    private Integer userId;
     private Pagination pagination;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Integer storeId) {
+        this.storeId = storeId;
+    }
 
     public Integer getId() {
         return id;

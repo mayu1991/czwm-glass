@@ -13,6 +13,16 @@ public class UserDto extends BaseDto {
 
     private Integer storeId;
 
+    private String storeIds;
+
+    public String getStoreIds() {
+        return storeIds;
+    }
+
+    public void setStoreIds(String storeIds) {
+        this.storeIds = storeIds;
+    }
+
     public Integer getId() {
         return id;
     }
