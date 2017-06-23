@@ -15,6 +15,8 @@ import com.czwm.intf.cust.ICustManagerService;
 import com.czwm.intf.user.IUserService;
 import com.czwm.util.JsonUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
@@ -33,6 +35,8 @@ import java.util.*;
 @Controller
 @RequestMapping(value = "cust")
 public class CustController {
+
+    private Logger LOGGER = LoggerFactory.getLogger(CustController.class);
 
     @Autowired
     private ICustManagerService custManagerService;
@@ -159,6 +163,7 @@ public class CustController {
     @ResponseBody
     public HttpBaseResponse getAll() {
 
+        LOGGER.info("查询所有客户信息start...");
         HttpBaseResponse response = new HttpBaseResponse();
         response.setSuccess(true);
         //查询所有客户
@@ -167,6 +172,7 @@ public class CustController {
         if (!CollectionUtils.isEmpty(custDetailDbs)) {
             response.setData(custDetailDbs);
         }
+        LOGGER.info("查询所有客户信息end...");
 
         return response;
     }

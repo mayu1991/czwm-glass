@@ -33,11 +33,14 @@ public class StoreController {
     @ResponseBody
     public HttpBaseResponse getAll() {
 
+        LOGGER.info("查询所有门市信息start...");
         HttpBaseResponse response = new HttpBaseResponse();
         response.setSuccess(true);
         //查询所有门市
         List<StoreDto> storeDbs = storeService.getStoreAll();
         response.setData(storeDbs);
+
+        LOGGER.info("查询所有门市信息end...");
         return response;
     }
 }

@@ -123,7 +123,7 @@
         <filter-name>druidWebStatFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    <!-- 连接池 启用 Web 监控统计功能    end-->
+    <!-- 连接池 启用 Web 监控统计功能  end-->
 
     <filter>
         <filter-name>base64DecodingFilter</filter-name>
@@ -135,19 +135,26 @@
     </filter-mapping>
 
     <!--log4j配置文件加载-->
-    <context-param>
+    <!--<context-param>
         <param-name>log4jConfigLocation</param-name>
-        <param-value>classpath:config/log_back.properties</param-value>
+        <param-value>classpath:config/log_back.xml</param-value>
     </context-param>
-    <!--启动一个watchdog线程每1800秒扫描一下log4j配置文件的变化-->
+    &lt;!&ndash;启动一个watchdog线程每1800秒扫描一下log4j配置文件的变化&ndash;&gt;
     <context-param>
         <param-name>log4jRefreshInterval</param-name>
         <param-value>1800000</param-value>
     </context-param>
-    <!--spring log4j监听器-->
+    &lt;!&ndash;spring log4j监听器&ndash;&gt;
     <listener>
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-    </listener>
+    </listener>-->
 
+    <context-param>
+        <param-name>logbackConfigLocation</param-name>
+        <param-value>classpath:config/log_back.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
+    </listener>
 
 </web-app>

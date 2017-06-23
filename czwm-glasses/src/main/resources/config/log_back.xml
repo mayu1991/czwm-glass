@@ -19,6 +19,7 @@
             <Pattern> %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{32} - %msg%n  </Pattern>
         </layout>
     </appender>
+
     <appender name="TIMELOGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${lOG_FILE_PATH}/czwn-glasses-time.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -28,6 +29,7 @@
             <Pattern> %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{32} - %msg%n  </Pattern>
         </layout>
     </appender>
+
     <appender name="DEBUGINFOFILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${lOG_FILE_PATH}/czwn-glasses-debug.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
